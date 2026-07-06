@@ -12,7 +12,7 @@ reward payouts, and a soulbound "I Voted" receipt.
 - Voter book stored as a Merkle tree; the root and a mock IPFS CID are stored in the contract.
 - Voting window with a specific future start and end time, enforced on-chain, plus a live countdown.
 - Winner and full sorted ranking shown when voting ends.
-- ERC20 reward token: name `OfirOr Token`, symbol `BAL`, auto-minted to each voter.
+- ERC20 reward token: name `OfirOr Token`, symbol `OFO`, auto-minted to each voter.
 - Anonymous matching: a voter can answer the same questionnaire and the contract votes for the
   closest-matching candidate (by absolute-difference distance) without revealing which one.
 - Bonus: soulbound (non-transferable) "I Voted" NFT receipt minted to each voter and a live results dashboard.
@@ -104,5 +104,5 @@ npm run deploy:sepolia
 
 ## Note on the token name
 
-The reward token's full name is `OfirOr Token` (symbol `BAL`), which includes the submitters'
+The reward token's full name is `OfirOr Token` (symbol `OFO`), which includes the submitters'
 names as required by the assignment.

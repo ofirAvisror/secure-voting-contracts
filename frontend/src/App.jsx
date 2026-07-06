@@ -58,7 +58,7 @@ export default function App() {
       <header className="header">
         <div>
           <h1>Elections 2025</h1>
-          <p className="subtitle">Decentralized voting with OfirOr (BAL) rewards</p>
+          <p className="subtitle">Decentralized voting with OfirOr (OFO) rewards</p>
         </div>
         <div className="wallet">
           {wallet ? (

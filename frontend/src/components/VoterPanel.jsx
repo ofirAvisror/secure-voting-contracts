@@ -102,14 +102,14 @@ export default function VoterPanel({ wallet, onConnect }) {
       <Countdown start={window.start} end={window.end} />
 
       <div className="reward-row">
-        <span>BAL balance: <strong>{balance ?? "-"}</strong></span>
+        <span>OFO balance: <strong>{balance ?? "-"}</strong></span>
         <span>Vote receipts: <strong>{receipts ?? "-"}</strong></span>
       </div>
 
       {voted ? (
         <div className="card success">
           <h2>You have already voted</h2>
-          <p>Thank you. Your BAL reward and soulbound receipt are in your wallet.</p>
+          <p>Thank you. Your OFO reward and soulbound receipt are in your wallet.</p>
         </div>
       ) : (
         <div className="card">

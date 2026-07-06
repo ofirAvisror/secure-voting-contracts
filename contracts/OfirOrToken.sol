@@ -14,7 +14,7 @@ contract OfirOrToken is ERC20, Ownable {
 
     constructor(
         address initialOwner
-    ) ERC20("OfirOr Token", "BAL") Ownable(initialOwner) {}
+    ) ERC20("OfirOr Token", "OFO") Ownable(initialOwner) {}
 
     function setMinter(address newMinter) external onlyOwner {
         require(newMinter != address(0), "OfirOr: zero minter");
