@@ -6,8 +6,7 @@
     "compile": "hardhat compile",
     "node": "hardhat node",
     "deploy:local": "hardhat run scripts/deploy.js --network localhost",
-    "deploy:sepolia": "hardhat run scripts/deploy.js --network sepolia",
-    "merkle": "hardhat run scripts/generate-merkle.js"
+    "deploy:sepolia": "hardhat run scripts/deploy.js --network sepolia"
   },
   "keywords": [
     "ethereum",

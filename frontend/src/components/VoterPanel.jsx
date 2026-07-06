@@ -25,7 +25,6 @@ export default function VoterPanel({ wallet, onConnect }) {
   const [voted, setVoted] = useState(false);
   const [balance, setBalance] = useState(null);
   const [receipts, setReceipts] = useState(null);
-  const [voterImport, setVoterImport] = useState("");
 
   const refresh = useCallback(async () => {
     if (!wallet) return;
@@ -46,13 +45,9 @@ export default function VoterPanel({ wallet, onConnect }) {
   }, [refresh]);
 
   function resolveProof() {
-    let book = loadVoterBook();
-    if (!book && voterImport.trim()) {
-      const addresses = voterImport.split(/[\s,]+/).map((a) => a.trim()).filter(Boolean);
-      book = { addresses };
-    }
+    const book = loadVoterBook();
     if (!book) {
-      throw new Error("Voter book not found. Import the voter list below.");
+      throw new Error("Voter book not found. The admin must set the voter book first.");
     }
     const proof = computeProof(book.addresses, wallet.account);
     if (!proof) {
@@ -170,16 +165,6 @@ export default function VoterPanel({ wallet, onConnect }) {
           </button>
         </div>
       )}
-
-      <details className="card">
-        <summary>Import voter list (if proof is missing)</summary>
-        <p className="hint">Paste the full voter address list used by the admin.</p>
-        <textarea
-          rows="4"
-          value={voterImport}
-          onChange={(e) => setVoterImport(e.target.value)}
-        />
-      </details>
 
       {status && <div className="status">{status}</div>}
     </div>

@@ -21,9 +21,8 @@ reward payouts, and a soulbound "I Voted" receipt.
 
 ```
 contracts/       Election.sol, OfirBalToken.sol, VoteReceipt.sol
-scripts/          deploy.js, generate-merkle.js, lib/merkle.js
+scripts/          deploy.js
 frontend/         React + Vite app
-ipfs-mock/        generated voter-book JSON files (mock IPFS)
 deployments/      per-network deployment output
 ```
 
@@ -59,15 +58,7 @@ npm run node
 npm run deploy:local
 ```
 
-3. Generate a voter book Merkle tree (uses the first 5 local accounts by default, or a
-   root-level `voters.json` file if present). It writes the voter book to `ipfs-mock/` and
-   prints the Merkle root and mock CID:
-
-```bash
-npm run merkle -- --network localhost
-```
-
-4. Start the frontend:
+3. Start the frontend:
 
 ```bash
 cd frontend
@@ -96,8 +87,8 @@ npm run deploy:sepolia
   the Election contract as the sole minter of both, so rewards and receipts can only be issued
   through a valid vote.
 - The voter book is a Merkle tree of eligible addresses. Only the root and a mock IPFS CID are
-  stored on-chain; the address list lives in the `ipfs-mock/` JSON file and in browser storage.
-  Each voter submits a Merkle proof when voting, verified by `MerkleProof.verify`.
+  stored on-chain; the address list is managed by the admin through the UI and stored in browser
+  localStorage. Each voter submits a Merkle proof when voting, verified by `MerkleProof.verify`.
 - Anonymous voting is computed on-chain: the voter's 3 answers are compared to every candidate's
   stored positions and the nearest candidate receives the vote. Because a blockchain is public,
   this hides the choice from the voter (the UI never reveals it) rather than from external observers.

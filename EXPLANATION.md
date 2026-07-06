@@ -81,27 +81,15 @@ After verification, `_castVote` marks the voter, updates counters, mints the BAL
 3. Default reward amount: 10 BAL per voter.
 4. Writes a deployment file to `deployments/<network>.json` **and** to `frontend/src/contracts.json` — including addresses and ABIs, so the frontend immediately knows what to talk to.
 
-### 3.2 `generate-merkle.js` — building the voter book
-
-- Loads a list of addresses: either from a `voters.json` file at the root (if present), or the first 5 local accounts by default.
-- Builds a Merkle tree, computes a root and a mock CID, and writes the voter book to `ipfs-mock/<cid>.json`.
-- Prints the root and CID so the admin can enter them in the contract (`setVoterBook`).
-
-### 3.3 `scripts/lib/merkle.js` — the Merkle logic (Node side)
-
-- `leafFor` — a leaf = `keccak256(address)` (encoded exactly as in the contract).
-- `buildTree` — builds a tree with `merkletreejs`, using `sortPairs: true` to match OpenZeppelin's `MerkleProof`.
-- `getRoot` / `getProof` / `mockCid` — root, proof, and mock IPFS CID helpers.
-
 ---
 
 ## 4. How the voter book works (Merkle Tree)
 
-Instead of storing a long list of addresses on-chain (expensive in gas), only a single Merkle tree **root** is stored. The full address list lives off-chain — in the `ipfs-mock/` file (mock IPFS) and in browser storage.
+Instead of storing a long list of addresses on-chain (expensive in gas), only a single Merkle tree **root** is stored. The full address list is entered by the admin through the UI and saved in browser localStorage.
 
 When a voter wants to vote, the frontend computes a **Merkle proof** for them (the path of hashes from their leaf up to the root) and sends it to the contract. The contract runs `MerkleProof.verify` and confirms the address really is part of the voter book — without the contract holding the entire list.
 
-Important: the client-side Merkle implementation (`frontend/src/lib/merkle.js`) must exactly match the Node-side and the contract implementation — the same leaf type (`keccak256(address)`) and the same pair-sorting method. Both implementations do match.
+Important: the client-side Merkle implementation (`frontend/src/lib/merkle.js`) must exactly match the contract implementation — the same leaf type (`keccak256(address)`) and the same pair-sorting method.
 
 ---
 
@@ -136,10 +124,7 @@ npm run node
 # 3. Deploy the contracts (also writes frontend/src/contracts.json)
 npm run deploy:local
 
-# 4. Generate the voter book (Merkle tree + ipfs-mock file)
-npm run merkle -- --network localhost
-
-# 5. Start the frontend
+# 4. Start the frontend
 cd frontend
 npm install
 npm run dev
@@ -148,7 +133,7 @@ npm run dev
 Then, in the browser:
 
 1. Connect MetaMask with the Hardhat network (RPC `http://127.0.0.1:8545`, chain id `31337`) and import a local account.
-2. In the **Admin** tab: add candidates, set the voter book (with the root and CID), and set the voting window.
+2. In the **Admin** tab: add candidates, set the voter book (paste in the eligible addresses), and set the voting window.
 3. Voters use the **Vote** tab; results appear in the **Results** tab.
 
 ---
@@ -167,9 +152,8 @@ The configuration is in `hardhat.config.js` (Solidity 0.8.28, optimizer enabled,
 
 ```
 contracts/    Election.sol, OfirBalToken.sol, VoteReceipt.sol   ← the smart contracts
-scripts/      deploy.js, generate-merkle.js, lib/merkle.js       ← deployment and voter book
+scripts/      deploy.js                                          ← deployment
 frontend/     React + Vite app                                   ← the user interface
-ipfs-mock/    voter book files (mock IPFS)                       ← generated at runtime
 deployments/  deployment output per network                     ← generated at runtime
 hardhat.config.js   Hardhat and network configuration
 ```
