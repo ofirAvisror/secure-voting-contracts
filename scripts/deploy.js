@@ -9,7 +9,7 @@ async function main() {
 
   console.log("Deploying with account:", owner);
 
-  const Token = await hre.ethers.getContractFactory("OfirOrToken");
+  const Token = await hre.ethers.getContractFactory("OfirBalToken");
   const token = await Token.deploy(owner);
   await token.waitForDeployment();
   const tokenAddress = await token.getAddress();
@@ -32,12 +32,12 @@ async function main() {
   await (await token.setMinter(electionAddress)).wait();
   await (await receipt.setMinter(electionAddress)).wait();
 
-  console.log("OfirOrToken: ", tokenAddress);
+  console.log("OfirBalToken:", tokenAddress);
   console.log("VoteReceipt: ", receiptAddress);
   console.log("Election:    ", electionAddress);
 
   const artifact = await hre.artifacts.readArtifact("Election");
-  const tokenArtifact = await hre.artifacts.readArtifact("OfirOrToken");
+  const tokenArtifact = await hre.artifacts.readArtifact("OfirBalToken");
   const receiptArtifact = await hre.artifacts.readArtifact("VoteReceipt");
 
   const deployment = {
@@ -45,13 +45,13 @@ async function main() {
     chainId: Number((await hre.ethers.provider.getNetwork()).chainId),
     rewardAmount: rewardAmount.toString(),
     addresses: {
-      OfirOrToken: tokenAddress,
+      OfirBalToken: tokenAddress,
       VoteReceipt: receiptAddress,
       Election: electionAddress,
     },
     abis: {
       Election: artifact.abi,
-      OfirOrToken: tokenArtifact.abi,
+      OfirBalToken: tokenArtifact.abi,
       VoteReceipt: receiptArtifact.abi,
     },
   };

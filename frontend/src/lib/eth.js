@@ -77,8 +77,8 @@ export function getElection(signerOrProvider) {
 
 export function getToken(signerOrProvider) {
   return new ethers.Contract(
-    deployment.addresses.OfirOrToken,
-    deployment.abis.OfirOrToken,
+    deployment.addresses.OfirBalToken,
+    deployment.abis.OfirBalToken,
     signerOrProvider,
   );
 }

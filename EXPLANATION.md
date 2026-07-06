@@ -19,9 +19,9 @@ The core idea: transparent, tamper-proof voting where:
 
 ## 2. The three smart contracts (`contracts/`)
 
-### 2.1 `OfirOrToken.sol` — the reward token (ERC20)
+### 2.1 `OfirBalToken.sol` — the reward token (ERC20)
 
-- An ERC20 token named **`OfirOr Token`** with symbol **`OFO`** (the name includes the submitters' names as required by the assignment).
+- An ERC20 token named **`OfirBal Token`** with symbol **`BAL`** (the name includes the submitter's name as required by the assignment).
 - Only one authorized address (`minter`) can create new tokens. The owner sets the minter via `setMinter`.
 - On deployment, the `minter` is set to be the **Election contract**, so tokens can only be minted through a valid vote.
 
@@ -62,7 +62,7 @@ Both functions go through `_checkEligibility`, which verifies:
 3. A voter book is configured.
 4. The Merkle proof is valid — i.e. `keccak256(address)` is part of the tree built from the root.
 
-After verification, `_castVote` marks the voter, updates counters, mints the OFO reward and the NFT receipt, and emits a `Voted` event.
+After verification, `_castVote` marks the voter, updates counters, mints the BAL reward and the NFT receipt, and emits a `Voted` event.
 
 **Read functions for results:**
 
@@ -76,9 +76,9 @@ After verification, `_castVote` marks the voter, updates counters, mints the OFO
 
 ### 3.1 `deploy.js` — deploying the contracts
 
-1. Deploys in order: `OfirOrToken` → `VoteReceipt` → `Election`.
+1. Deploys in order: `OfirBalToken` → `VoteReceipt` → `Election`.
 2. Sets the Election contract as the sole `minter` of the token and the receipt (so rewards and receipts can only be issued through a valid vote).
-3. Default reward amount: 10 OFO per voter.
+3. Default reward amount: 10 BAL per voter.
 4. Writes a deployment file to `deployments/<network>.json` **and** to `frontend/src/contracts.json` — including addresses and ABIs, so the frontend immediately knows what to talk to.
 
 ### 3.2 `generate-merkle.js` — building the voter book
@@ -118,7 +118,7 @@ A React + Vite app. Key points:
 **The three screens (components):**
 
 - **`AdminPanel.jsx`** (admin only) — adds candidates (with sliders for positions), enters the voter list and builds the Merkle tree, and sets the voting window.
-- **`VoterPanel.jsx`** — the voting screen: choose between a direct vote and an anonymous questionnaire, shows OFO balance and receipts, and a countdown. Computes the proof before submitting.
+- **`VoterPanel.jsx`** — the voting screen: choose between a direct vote and an anonymous questionnaire, shows BAL balance and receipts, and a countdown. Computes the proof before submitting.
 - **`Results.jsx`** — live ranking (refreshes every 5 seconds) with a bar chart, total votes, and the winner once voting ends.
 - **`Countdown.jsx`** — a countdown component for the voting window.
 
@@ -166,7 +166,7 @@ The configuration is in `hardhat.config.js` (Solidity 0.8.28, optimizer enabled,
 ## 8. Directory structure at a glance
 
 ```
-contracts/    Election.sol, OfirOrToken.sol, VoteReceipt.sol   ← the smart contracts
+contracts/    Election.sol, OfirBalToken.sol, VoteReceipt.sol   ← the smart contracts
 scripts/      deploy.js, generate-merkle.js, lib/merkle.js       ← deployment and voter book
 frontend/     React + Vite app                                   ← the user interface
 ipfs-mock/    voter book files (mock IPFS)                       ← generated at runtime
@@ -178,7 +178,7 @@ hardhat.config.js   Hardhat and network configuration
 
 ## 10. Key security and design points
 
-- **Single minting source:** only the Election contract can mint OFO and receipts — there's no way to get a reward without a valid vote.
+- **Single minting source:** only the Election contract can mint BAL and receipts — there's no way to get a reward without a valid vote.
 - **Eligibility without an on-chain list:** a Merkle proof lets you verify eligibility without storing all addresses (saving gas and providing partial privacy).
 - **Anonymity from the voter:** in a questionnaire vote, the UI doesn't reveal who was selected. However, because the blockchain is public, an external observer can compute it — the anonymity is toward the voter, not toward the world.
 - **Time-window and single-vote enforcement** happen on-chain and cannot be bypassed from the frontend.
