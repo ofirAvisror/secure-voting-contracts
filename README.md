@@ -35,7 +35,6 @@ deployments/      per-network deployment output
 
 ```bash
 npm install
-cp .env.example .env   # only needed for Sepolia
 ```
 
 ## Compile
@@ -52,7 +51,7 @@ npm run compile
 npm run node
 ```
 
-2. In a second terminal, deploy the contracts (this also writes `frontend/src/contracts.json`):
+2. In a second terminal, deploy the contracts (this generates `frontend/src/contracts.json` which the frontend requires):
 
 ```bash
 npm run deploy:local
@@ -69,17 +68,6 @@ npm run dev
 5. Open the app, connect MetaMask (import a local account and add the Hardhat network,
    chain id 31337), and use the Admin tab to add candidates, set the voter book, and set the
    voting window. Voters use the Vote tab; results appear under the Results tab.
-
-## Deploy to Sepolia
-
-1. Fill in `.env` with `SEPOLIA_RPC_URL` and `PRIVATE_KEY`.
-2. Deploy:
-
-```bash
-npm run deploy:sepolia
-```
-
-3. Rebuild/serve the frontend; `frontend/src/contracts.json` is updated with the Sepolia addresses.
 
 ## How the pieces fit together
 

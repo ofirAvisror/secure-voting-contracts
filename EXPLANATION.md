@@ -138,12 +138,6 @@ Then, in the browser:
 
 ---
 
-## 7. Deploying to Sepolia (a real testnet)
-
-1. Fill in `.env` with `SEPOLIA_RPC_URL` and `PRIVATE_KEY` (⚠️ never commit `.env` — it's already in `.gitignore`).
-2. `npm run deploy:sepolia`.
-3. Rebuild/serve the frontend; `contracts.json` will be updated with the Sepolia addresses.
-
 The configuration is in `hardhat.config.js` (Solidity 0.8.28, optimizer enabled, evmVersion `cancun`).
 
 ---
