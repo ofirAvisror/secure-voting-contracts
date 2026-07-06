@@ -12,7 +12,7 @@ reward payouts, and a soulbound "I Voted" receipt.
 - Voter book stored as a Merkle tree; the root and a mock IPFS CID are stored in the contract.
 - Voting window with a specific future start and end time, enforced on-chain, plus a live countdown.
 - Winner and full sorted ranking shown when voting ends.
-- ERC20 reward token: name `OfirBal Token`, symbol `BAL`, auto-minted to each voter.
+- ERC20 reward token: name `OfirOr Token`, symbol `BAL`, auto-minted to each voter.
 - Anonymous matching: a voter can answer the same questionnaire and the contract votes for the
   closest-matching candidate (by absolute-difference distance) without revealing which one.
 - Bonus: soulbound (non-transferable) "I Voted" NFT receipt minted to each voter and a live results dashboard.
@@ -20,9 +20,8 @@ reward payouts, and a soulbound "I Voted" receipt.
 ## Project structure
 
 ```
-contracts/       Election.sol, OfirBalToken.sol, VoteReceipt.sol
+contracts/       Election.sol, OfirOrToken.sol, VoteReceipt.sol
 scripts/          deploy.js, generate-merkle.js, lib/merkle.js
-test/             election.test.js
 frontend/         React + Vite app
 ipfs-mock/        generated voter-book JSON files (mock IPFS)
 deployments/      per-network deployment output
@@ -40,11 +39,10 @@ npm install
 cp .env.example .env   # only needed for Sepolia
 ```
 
-## Compile and test
+## Compile
 
 ```bash
 npm run compile
-npm test
 ```
 
 ## Run locally
@@ -94,7 +92,7 @@ npm run deploy:sepolia
 
 ## How the pieces fit together
 
-- `OfirBalToken` and `VoteReceipt` are deployed first, then `Election`. The deploy script sets
+- `OfirOrToken` and `VoteReceipt` are deployed first, then `Election`. The deploy script sets
   the Election contract as the sole minter of both, so rewards and receipts can only be issued
   through a valid vote.
 - The voter book is a Merkle tree of eligible addresses. Only the root and a mock IPFS CID are
@@ -106,5 +104,5 @@ npm run deploy:sepolia
 
 ## Note on the token name
 
-The reward token's full name is `OfirBal Token` (symbol `BAL`), which includes the submitter's
-name as required by the assignment.
+The reward token's full name is `OfirOr Token` (symbol `BAL`), which includes the submitters'
+names as required by the assignment.

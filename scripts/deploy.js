@@ -9,7 +9,7 @@ async function main() {
 
   console.log("Deploying with account:", owner);
 
-  const Token = await hre.ethers.getContractFactory("OfirBalToken");
+  const Token = await hre.ethers.getContractFactory("OfirOrToken");
   const token = await Token.deploy(owner);
   await token.waitForDeployment();
   const tokenAddress = await token.getAddress();
@@ -20,19 +20,24 @@ async function main() {
   const receiptAddress = await receipt.getAddress();
 
   const Election = await hre.ethers.getContractFactory("Election");
-  const election = await Election.deploy(tokenAddress, receiptAddress, rewardAmount, owner);
+  const election = await Election.deploy(
+    tokenAddress,
+    receiptAddress,
+    rewardAmount,
+    owner,
+  );
   await election.waitForDeployment();
   const electionAddress = await election.getAddress();
 
   await (await token.setMinter(electionAddress)).wait();
   await (await receipt.setMinter(electionAddress)).wait();
 
-  console.log("OfirBalToken:", tokenAddress);
+  console.log("OfirOrToken: ", tokenAddress);
   console.log("VoteReceipt: ", receiptAddress);
   console.log("Election:    ", electionAddress);
 
   const artifact = await hre.artifacts.readArtifact("Election");
-  const tokenArtifact = await hre.artifacts.readArtifact("OfirBalToken");
+  const tokenArtifact = await hre.artifacts.readArtifact("OfirOrToken");
   const receiptArtifact = await hre.artifacts.readArtifact("VoteReceipt");
 
   const deployment = {
@@ -40,15 +45,15 @@ async function main() {
     chainId: Number((await hre.ethers.provider.getNetwork()).chainId),
     rewardAmount: rewardAmount.toString(),
     addresses: {
-      OfirBalToken: tokenAddress,
+      OfirOrToken: tokenAddress,
       VoteReceipt: receiptAddress,
-      Election: electionAddress
+      Election: electionAddress,
     },
     abis: {
       Election: artifact.abi,
-      OfirBalToken: tokenArtifact.abi,
-      VoteReceipt: receiptArtifact.abi
-    }
+      OfirOrToken: tokenArtifact.abi,
+      VoteReceipt: receiptArtifact.abi,
+    },
   };
 
   const deploymentsDir = path.join(__dirname, "..", "deployments");
@@ -57,14 +62,14 @@ async function main() {
   }
   fs.writeFileSync(
     path.join(deploymentsDir, hre.network.name + ".json"),
-    JSON.stringify(deployment, null, 2)
+    JSON.stringify(deployment, null, 2),
   );
 
   const frontendDir = path.join(__dirname, "..", "frontend", "src");
   if (fs.existsSync(frontendDir)) {
     fs.writeFileSync(
       path.join(frontendDir, "contracts.json"),
-      JSON.stringify(deployment, null, 2)
+      JSON.stringify(deployment, null, 2),
     );
     console.log("Frontend contracts.json updated");
   }

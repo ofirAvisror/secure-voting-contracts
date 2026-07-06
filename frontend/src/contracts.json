@@ -3,9 +3,9 @@
   "chainId": 11155111,
   "rewardAmount": "10000000000000000000",
   "addresses": {
-    "OfirBalToken": "0xE4954711014dDC7e47b6549EeC39DbE27585d7Df",
-    "VoteReceipt": "0xed1B24Ab05eaD2B9268896910C03339995DB30Ec",
-    "Election": "0x9B2DFec2473Cf11D48a101EDe16437edCbe4e217"
+    "OfirOrToken": "0xB3fb9cdAB5FCeD0B05f4ebC2e06a1569F0a79FA2",
+    "VoteReceipt": "0xb59398EE00B76AB4b619E817d018a7272A4dF85e",
+    "Election": "0x4D2e9ed5CE2D04Cf5f8b886A8b6520dD403C722E"
   },
   "abis": {
     "Election": [
@@ -531,7 +531,7 @@
         "type": "function"
       }
     ],
-    "OfirBalToken": [
+    "OfirOrToken": [
       {
         "inputs": [
           {

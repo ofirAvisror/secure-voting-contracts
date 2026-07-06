@@ -19,15 +19,15 @@ const CHAIN_METADATA = {
     chainName: "Sepolia",
     nativeCurrency: { name: "Sepolia Ether", symbol: "ETH", decimals: 18 },
     rpcUrls: ["https://rpc.sepolia.org"],
-    blockExplorerUrls: ["https://sepolia.etherscan.io"]
+    blockExplorerUrls: ["https://sepolia.etherscan.io"],
   },
   31337: {
     chainId: "0x7a69",
     chainName: "Hardhat Local",
     nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
     rpcUrls: ["http://127.0.0.1:8545"],
-    blockExplorerUrls: []
-  }
+    blockExplorerUrls: [],
+  },
 };
 
 export async function switchNetwork() {
@@ -41,13 +41,13 @@ export async function switchNetwork() {
   try {
     await window.ethereum.request({
       method: "wallet_switchEthereumChain",
-      params: [{ chainId: target.chainId }]
+      params: [{ chainId: target.chainId }],
     });
   } catch (err) {
     if (err.code === 4902) {
       await window.ethereum.request({
         method: "wallet_addEthereumChain",
-        params: [target]
+        params: [target],
       });
     } else {
       throw err;
@@ -71,15 +71,15 @@ export function getElection(signerOrProvider) {
   return new ethers.Contract(
     deployment.addresses.Election,
     deployment.abis.Election,
-    signerOrProvider
+    signerOrProvider,
   );
 }
 
 export function getToken(signerOrProvider) {
   return new ethers.Contract(
-    deployment.addresses.OfirBalToken,
-    deployment.abis.OfirBalToken,
-    signerOrProvider
+    deployment.addresses.OfirOrToken,
+    deployment.abis.OfirOrToken,
+    signerOrProvider,
   );
 }
 
@@ -87,6 +87,6 @@ export function getReceipt(signerOrProvider) {
   return new ethers.Contract(
     deployment.addresses.VoteReceipt,
     deployment.abis.VoteReceipt,
-    signerOrProvider
+    signerOrProvider,
   );
 }
