@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   connectWallet,
+  ensureContractReady,
   getElection,
   isConfigured,
   getDeployment,
@@ -30,6 +31,7 @@ export default function App() {
         return;
       }
       const election = getElection(w.signer);
+      await ensureContractReady(getDeployment().addresses.Election, w.provider, "Election");
       const owner = await election.owner();
       setIsOwner(owner.toLowerCase() === w.account.toLowerCase());
     } catch (err) {

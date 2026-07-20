@@ -67,6 +67,28 @@ export async function connectWallet() {
   return { provider, signer, account, chainId: Number(network.chainId) };
 }
 
+export async function ensureContractReady(
+  address,
+  signerOrProvider,
+  label = "contract",
+) {
+  if (!address) {
+    throw new Error("No contract address is configured.");
+  }
+
+  const provider = signerOrProvider?.provider ?? signerOrProvider;
+  if (!provider || typeof provider.getCode !== "function") {
+    throw new Error("Wallet provider is not available.");
+  }
+
+  const code = await provider.getCode(address);
+  if (!code || code === "0x") {
+    throw new Error(
+      `No ${label} was found at ${address} on the connected network. Make sure the local Hardhat node is running and the contracts are deployed with "npm run deploy:local".`,
+    );
+  }
+}
+
 export function getElection(signerOrProvider) {
   return new ethers.Contract(
     deployment.addresses.Election,
